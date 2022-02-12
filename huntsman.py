@@ -14,7 +14,7 @@ driver.get("https://www.newegg.com/p/2WK-0004-002X8?Description=xbox%20series%20
 
 print("Scanning:", driver.title)
 
-target = driver.find_element_by_xpath("//*[@id=\"app\"]/div[3]/div[1]/div/div/div[2]/div[1]/div[5]/div[3]/div[1]/strong")
+target = driver.find_element_by_id("app")
 
 tarString = target.text
 
