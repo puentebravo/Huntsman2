@@ -1,7 +1,5 @@
-from concurrent.futures import process
 from selenium import webdriver
 from dotenv import load_dotenv
-from selenium.webdriver.common.keys import Keys
 import os
 
 load_dotenv()
