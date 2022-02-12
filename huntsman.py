@@ -1,8 +1,14 @@
+from concurrent.futures import process
 from selenium import webdriver
+from dotenv import load_dotenv
 from selenium.webdriver.common.keys import Keys
+import os
 
+load_dotenv()
 
-driver = webdriver.Chrome(executable_path=r'C:/Program Files/Google/Chrome/WebDriver/chromedriver.exe')
+path = os.getenv("EXE_PATH")
+
+driver = webdriver.Chrome(executable_path=r"{}".format(path))
 
 driver.get("https://www.newegg.com/p/2WK-0004-002X8?Description=xbox%20series%20x&cm_re=xbox_series%20x-_-2WK-0004-002X8-_-Product&quicklink=true")
 
