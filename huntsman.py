@@ -1,14 +1,28 @@
 from selenium import webdriver
 from dotenv import load_dotenv
+import smtplib, ssl
 import os
-
 load_dotenv()
+
+port = 465
+destination = "https://www.newegg.com/p/2WK-0004-002X8?Description=xbox%20series%20x&cm_re=xbox_series%20x-_-2WK-0004-002X8-_-Product&quicklink=true"
+sender_email = os.getenv("LOGIN_EMAIL")
+auth = os.getenv("LOGIN_PASS")
+receiver_email = os.getenv("TARGET_EMAIL")
+message = """
+Subject: ---SCAN RESULTS---
+
+Scan complete. Item in stock at {}. Immediate acquisition recommended.
+
+""".format(destination)
 
 path = os.getenv("EXE_PATH")
 
+context = ssl.create_default_context()
+
 driver = webdriver.Chrome(executable_path=r"{}".format(path))
 
-driver.get("https://www.newegg.com/p/2WK-0004-002X8?Description=xbox%20series%20x&cm_re=xbox_series%20x-_-2WK-0004-002X8-_-Product&quicklink=true")
+driver.get(destination)
 
 print("Scanning:", driver.title)
 
@@ -17,7 +31,10 @@ target = driver.find_element_by_id("app")
 tarString = target.text
 
 if (tarString.find("In stock.")):
-    print("Item is available. You should buy it before someone else does.")
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+        server.login(sender_email, auth)
+        server.sendmail(sender_email, receiver_email, message)
+    
 else:
     print("Item unavailable. Run this scan again later.")
 
