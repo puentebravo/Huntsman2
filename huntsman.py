@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
 import smtplib, ssl
 import os
@@ -20,20 +21,21 @@ path = os.getenv("EXE_PATH")
 
 context = ssl.create_default_context()
 
-driver = webdriver.Chrome(executable_path=r"{}".format(path))
+driver = webdriver.Chrome()
 
 driver.get(destination)
 
 print("Scanning:", driver.title)
 
-target = driver.find_element_by_id("app")
+target = driver.find_element(By.ID, "app")
 
 tarString = target.text
 
 if (tarString.find("In stock.")):
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login(sender_email, auth)
-        server.sendmail(sender_email, receiver_email, message)
+    # with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+    #     server.login(sender_email, auth)
+    #     server.sendmail(sender_email, receiver_email, message)
+    print("It's there! This worked, y'all!")
     
 else:
     print("Item unavailable. Run this scan again later.")
